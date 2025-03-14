@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوت الواتساب الذكي | One Team</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e5799, #207cca);
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        .status {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            padding: 10px 20px;
+            border-radius: 50px;
+            background-color: #4CAF50;
+            display: inline-block;
+        }
+        .features {
+            text-align: right;
+            margin: 20px 0;
+        }
+        .feature-item {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        .uptime {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🤖</div>
+        <h1>بوت الواتساب الذكي</h1>
+        <div class="status pulse" id="status">قيد التشغيل ✅</div>
+        <div class="uptime" id="uptime">وقت التشغيل: جاري الحساب...</div>
+        
+        <div class="features">
+            <h2>المميزات 🚀</h2>
+            <div class="feature-item">✅ تحميل فيديوهات من فيسبوك، يوتيوب، وانستغرام</div>
+            <div class="feature-item">✅ إنشاء ملصقات من الصور بسهولة</div>
+            <div class="feature-item">✅ تحويل النص إلى صوت</div>
+            <div class="feature-item">✅ الرد التلقائي على الرسائل</div>
+            <div class="feature-item">✅ إدارة المجموعات وأوامر للمشرفين</div>
+            <div class="feature-item">✅ ألعاب وتسلية في المجموعات</div>
+        </div>
+        <div class="footer">
+            تم التطوير بواسطة فريق One Team &copy; 2023
+        </div>
+    </div>
+    
+    <script>
+        // تحديث حالة البوت كل 30 ثانية
+        function updateStatus() {
+            fetch('/uptime')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').textContent = "قيد التشغيل ✅";
+                    
+                    // حساب وقت التشغيل
+                    const startTime = new Date(data.timestamp);
+                    const now = new Date();
+                    const uptimeMs = now - new Date(startTime);
+                    const hours = Math.floor(uptimeMs / (1000 * 60 * 60));
+                    const minutes = Math.floor((uptimeMs % (1000 * 60 * 60)) / (1000 * 60));
+                    
+                    document.getElementById('uptime').textContent = `وقت التشغيل: ${hours} ساعة و ${minutes} دقيقة`;
+                })
+                .catch(error => {
+                    document.getElementById('status').textContent = "غير متصل ❌";
+                    document.getElementById('status').style.backgroundColor = "#f44336";
+                });
+        }
+        
+        // تحديث الحالة فور تحميل الصفحة
+        updateStatus();
+        
+        // ثم تحديث كل 30 ثانية
+        setInterval(updateStatus, 30000);
+    </script>
+</body>
+</html>
